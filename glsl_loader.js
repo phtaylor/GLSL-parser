@@ -37,7 +37,7 @@ function removeComments(str){
   return str.replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm," ");
 }
 
-
+//This funcirton
 function mangle_underscore_functions_in_the_code(str){
   let words = str.split(" ");
   let newStr = str;
