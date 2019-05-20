@@ -3,9 +3,9 @@ This is a GLSL parser written as a webpack loader, this loader will mangleyour G
 
 Modifications 
 ------------- 
-Obfuscates private variables. 
-Removes comments.
-Removes whitespaces.
+* Obfuscates private variables. 
+* Removes comments.
+* Removes whitespaces.
 
 ## Getting Started
 
