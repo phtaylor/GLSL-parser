@@ -1,23 +1,17 @@
-
-const strTest = ["_abc", "_abc_xyz", "_abc987", "_xyz_987", "_aBC", "_abc_Abc"];
-
 module.exports = function (source){
-  // console.log(source);
   let str = parseGLSL(source);
-  console.log(mangle_underscore_functions_in_the_code(str));
-  // return mangle_underscore_functions_in_the_code(str);
-  return "const myGLSL = GLSL`"+ mangle_underscore_functions_in_the_code(str)+"`;";
-
+  str = removeWhitespace(str);
+  let ans = "const myGLSL = GLSL`"+ mangle_underscore_functions_in_the_code(str)+"`;"
+  console.log(ans);
+  return ans;
 }
 
 function parseGLSL(str) {
-  // str = str.replace(/(\/\*[^*]*\*\/)|(\/\/[^*]*)/g, '');
 	let firstvariable = "`";
   let secondvariable = "`";
-  let result = str.replace(/\n/g, '');
+  let result = removeComments(str);
+  result = result.replace(/\n/g, '');
   result = result.match(new RegExp(firstvariable + "(.*)" + secondvariable));
-  // // console.dir(str);
-  // console.dir(result);
   return result[1];
 }
 
@@ -36,6 +30,11 @@ function hashString(str) {
     hash += String.fromCharCode(97+Number.parseInt(ch))
   }
   return hash;
+}
+
+
+function removeComments(str){
+  return str.replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm," ");
 }
 
 
@@ -60,13 +59,19 @@ function mangle_underscore_functions_in_the_code(str){
    
    for (let key in SymbolMapping) {
       let val = SymbolMapping[key];
-      // console.log(key,val);
-  
-      /* console.log(wordToReplace) */;
       newStr = newStr.replace(new RegExp(key, 'g'), val);
     }
     return newStr;
 }
+
+//This function removes the whitespaces.
+function removeWhitespace (str){  
+  return str.replace(/\s\s+/g, ' ');
+}
+
+
+
+
 
 
 
