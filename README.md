@@ -23,19 +23,23 @@ npm install --save-dev webpack@4.3.2
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+* Make sure that your root file ( index.js ) is in the src directory.
+* Copy the glsl_loader.js file in your root project directory.
+* Copy webpack.config.js file in your root project directory.
+* To make a build run the following command in the terminal.
+```
+npm run build
+```
+* The build will be created as bundle.js in the Build directory.
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-
+* [NodeJs](https://nodejs.org/en/docs/)
+* [Webpack](https://webpack.js.org/concepts/loaders)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License.
 
 
 
