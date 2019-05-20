@@ -3,9 +3,9 @@ This is a GLSL parser written as a webpack loader, this loader will mangleyour G
 
 Modifications 
 ------------- 
-*Obfuscates private variables. 
-*Removes comments.
-*Removes whitespaces.
+* Obfuscates private variables. 
+* Removes comments.
+* Removes whitespaces.
 
 ## Getting Started
 
@@ -13,8 +13,9 @@ These instructions will help you .
 
 ### Prerequisites
 
-*Install Node.Js if you have not already.
-*Install webpack Version 4.3.2
+* Install Node.Js if you have not already.
+* nstall webpack Version 4.3.2
+
 npm install --save-dev webpack@4.3.2
 
 ### Installing
