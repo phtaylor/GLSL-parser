@@ -1,5 +1,11 @@
 # GLSL Parser
-One Paragraph of project description goes here
+This is a GLSL parser written as a webpack loader, this loader will mangleyour GLSL code with the following modificitons.
+
+Modifications 
+------------- 
+Obfuscates private variables. 
+Removes comments.
+Removes whitespaces.
 
 ## Getting Started
 
