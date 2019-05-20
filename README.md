@@ -14,10 +14,10 @@ These instructions will help you .
 ### Prerequisites
 
 * Install Node.Js if you have not already.
-* nstall webpack Version 4.3.2
+* nstall webpack Version 4.32.0
 
 ```
-npm install --save-dev webpack@4.3.2
+npm install --save-dev webpack@4.32.0
 ```
 
 
