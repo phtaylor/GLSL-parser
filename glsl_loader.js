@@ -1,79 +1,74 @@
 module.exports = function (source){
-  let str = parseGLSL(source);
-  str = removeWhitespace(str);
-  let ans = "const myGLSL = GLSL`"+ mangle_underscore_functions_in_the_code(str)+"`;"
-  console.log(ans);
-  return ans;
-}
 
-function parseGLSL(str) {
-	let firstvariable = "`";
-  let secondvariable = "`";
-  let result = removeComments(str);
-  result = result.replace(/\n/g, '');
-  result = result.match(new RegExp(firstvariable + "(.*)" + secondvariable));
-  return result[1];
-}
+  // do we we have GLSL code in this file?
+  const startIndex = source.indexOf("GLSL`");
+  if(startIndex!= -1) {
+    const endIndex = source.indexOf("`", startIndex+5);
+    if(endIndex == -1) {
+      console.warn("Unmatching GLSL backtick found");
+      return source;
+    }
 
-// Convert a string to a string hash.
-function hashString(str) {
-  let hashInt = 0;
-  for (let i = 0; i < str.length; i++) {
-    hashInt += Math.pow(str.charCodeAt(i) * 31, str.length - i);
-    hashInt = hashInt & hashInt; // Convert to 32bit integer
+    // extract the GLSL code for processing...
+    const count = endIndex - (startIndex+5);
+    const glsl = source.substring(startIndex+5, count);
+
+    // Modify the GLSL code...
+    if(options.removeWhitespace) {
+      glsl = removeWhitespace(glsl)
+    }
+
+    if(options.removeComments) {
+      glsl = removeComments(glsl)
+    }
+
+    if(options.manglePrivateVariables) {
+      glsl = manglePrivateVariables(glsl)
+    }
+
+    // put it back where we found it. 
+
+    return source.substring(0, startIndex+5) + glsl + source.substring(endIndex+1);
   }
-  // Now convert to a string.
-  const hashchars = ("" + hashInt).split('');
-  /* console.log(hashchars) */
-  let hash = "";
-  for(let ch of hashchars){
-    hash += String.fromCharCode(97+Number.parseInt(ch))
-  }
-  return hash;
+  retiurn source;
 }
 
+// This function removes the whitespaces.
+function removeWhitespace (str){  
+  return str.replace(/\s\s+/g, ' ');
+}
 
 function removeComments(str){
   return str.replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm," ");
 }
 
 //This funcirton
-function mangle_underscore_functions_in_the_code(str){
-  let words = str.split(" ");
-  let newStr = str;
+function manglePrivateVariables(str){
+
+  const words = str.split(" ");
   const underscoreWords = new Set();
-  let SymbolMapping ={};
+  const symbolMapping = {};
+
   words.forEach(function(word) {
-  	if(word.startsWith("_")){
-  	      word = word.split(".")[0];
-          word = word.split(";")[0];
-          word = word.split("(")[0];
-          word = word.split(")")[0];
-  	      underscoreWords.add(word);
-  	    }
-	});
-   underscoreWords.forEach(function(val) {
-       /* console.log(hashString(val)); */
-      SymbolMapping[val] = hashString(val);
-   });
-   
-   for (let key in SymbolMapping) {
-      let val = SymbolMapping[key];
-      newStr = newStr.replace(new RegExp(key, 'g'), val);
+    if(word.startsWith("_")){
+      word = word.split(".")[0];
+      word = word.split(";")[0];
+      word = word.split("(")[0];
+      word = word.split(")")[0];
+      underscoreWords.add(word);
     }
-    return newStr;
+  });
+  underscoreWords.forEach(function(val) {
+    /* console.log(hashString(val)); */
+    symbolMapping[val] = hashString(val);
+  });
+   
+  let newStr = str;
+  for (let originalName in symbolMapping) {
+    const mangledName = symbolMapping[originalName];
+    newStr = newStr.replace(new RegExp(originalName, 'g'), mangledName);
+  }
+  return newStr;
 }
-
-//This function removes the whitespaces.
-function removeWhitespace (str){  
-  return str.replace(/\s\s+/g, ' ');
-}
-
-
-
-
-
-
-
 
 
